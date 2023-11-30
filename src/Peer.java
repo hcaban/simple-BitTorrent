@@ -2,7 +2,7 @@ import java.io.*;
 import java.net.*;
 
 public class Peer {
-
+    // class variables
     public static int numberOfPieces = -1;
 
     // Peer attributes
@@ -25,7 +25,7 @@ public class Peer {
         this.hasFile = hasFile;
 
         if (numberOfPieces == -1) {
-            System.err.println("Configuration Not Complete");
+            System.err.println("Configuration not complete, class variable `numberOfPieces` not instantiated");
             System.exit(1);
         }
     }

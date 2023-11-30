@@ -7,8 +7,8 @@ public class Logging {
         try {
             output = new PrintWriter(new BufferedWriter(new FileWriter(filename)), true);
         } catch (Exception e) {
-            
+
         }
-        
+
     }
 }

@@ -20,11 +20,8 @@ public class peerProcess {
         }
 
         readCommon();
-
         Peer.numberOfPieces = (fileSize / pieceSize) + (fileSize % pieceSize > 0 ? 1 : 0);
-
         ArrayList<Peer> peers = readPeerInfo();
-
         Logging logger = new Logging("log_peer_" + id + ".log");
 
     }
@@ -69,6 +66,7 @@ public class peerProcess {
             System.exit(1);
         }
 
+        input.close();
     }
 
     public static ArrayList<Peer> readPeerInfo() {
