@@ -26,6 +26,7 @@ public class Peer {
         this.hostname = hostname;
         this.port = port;
         this.hasFile = hasFile;
+        pieces = new BitSet();
 
         if (hasFile) {
             pieces.set(0, pieces.size());

@@ -35,7 +35,6 @@ public class peerProcess {
         }
         peers.remove(0);
 
-        
     }
 
     public static void readCommon() {
