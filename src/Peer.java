@@ -56,6 +56,18 @@ public class Peer {
         }
     }
 
+    public int getID() {
+        return id;
+    }
+
+    public String getHostname() {
+        return hostname;
+    }
+
+    public int getPort() {
+        return port;
+    }
+
     public DataInputStream getInputStream() {
         return input;
     }

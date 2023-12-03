@@ -1,4 +1,5 @@
 import java.io.*;
+import java.net.*;
 import java.util.*;
 
 public class peerProcess {
@@ -23,9 +24,18 @@ public class peerProcess {
         Peer.numberOfPieces = (fileSize / pieceSize) + (fileSize % pieceSize > 0 ? 1 : 0);
         ArrayList<Peer> peers = readPeerInfo();
         Logging logger = new Logging("log_peer_" + id + ".log");
+        
+        ServerSocket serverSocket = null;
+
+        try {
+            serverSocket = new ServerSocket(peers.get(0).getPort());
+        } catch (IOException e) {
+            System.err.println("Could not create server socket");
+            System.exit(0);
+        }
+        peers.remove(0);
 
         
-
     }
 
     public static void readCommon() {
