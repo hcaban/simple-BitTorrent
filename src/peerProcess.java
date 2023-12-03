@@ -23,7 +23,7 @@ public class peerProcess {
         readCommon();
         Peer.numberOfPieces = (fileSize / pieceSize) + (fileSize % pieceSize > 0 ? 1 : 0);
         ArrayList<Peer> peers = readPeerInfo();
-        Logging logger = new Logging("log_peer_" + id + ".log");
+        Logging logger = new Logging("log_peer_" + id + ".log", peers.get(peers.size() - 1));
         
         ServerSocket serverSocket = null;
 
