@@ -24,6 +24,8 @@ public class peerProcess {
         ArrayList<Peer> peers = readPeerInfo();
         Logging logger = new Logging("log_peer_" + id + ".log");
 
+        
+
     }
 
     public static void readCommon() {

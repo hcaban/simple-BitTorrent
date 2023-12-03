@@ -1,5 +1,6 @@
 import java.io.*;
 import java.net.*;
+import java.util.BitSet;
 
 public class Peer {
     // class variables
@@ -10,6 +11,8 @@ public class Peer {
     private String hostname;
     private int port;
     private Boolean hasFile;
+
+    BitSet pieces;
 
     // Socket
     private Socket socket = null;
@@ -23,6 +26,12 @@ public class Peer {
         this.hostname = hostname;
         this.port = port;
         this.hasFile = hasFile;
+
+        if (hasFile) {
+            pieces.set(0, pieces.size());
+        } else {
+            pieces.clear(0, pieces.size());
+        }
 
         if (numberOfPieces == -1) {
             System.err.println("Configuration not complete, class variable `numberOfPieces` not instantiated");
@@ -45,5 +54,17 @@ public class Peer {
             System.out.println("IO error in method startConnection");
             System.exit(1);
         }
+    }
+
+    public DataInputStream getInputStream() {
+        return input;
+    }
+
+    public DataOutputStream getOutputStream() {
+        return output;
+    }
+
+    public synchronized void setPiece(int index) {
+        pieces.set(index);
     }
 }

@@ -1,7 +1,4 @@
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
+import java.io.*;
 import java.util.*;
 
 class PieceManager {
@@ -14,9 +11,11 @@ class PieceManager {
     final private int fileSize;
 
     private BitSet pieceField;
+    private BitSet pieceUtilization;
 
     public PieceManager(String directory, String filename, int fileSize, int pieceSize) {
         pieceField = new BitSet(Math.ceilDiv(fileSize, pieceSize));
+        pieceUtilization = new BitSet(pieceField.size());
 
         this.directory = directory;
         this.filename = filename;
@@ -24,20 +23,36 @@ class PieceManager {
         this.fileSize = fileSize;
     }
 
-    public void setPiece(int index) {
+    public synchronized void setPiece(int index) {
         pieceField.set(index);
     }
 
-    public void clearPiece(int index) {
-        pieceField.clear(index);
-    }
-
-    public void setAllPieces() {
+    public synchronized void setAllPieces() {
         pieceField.set(0, pieceField.size());
     }
 
-    public void clearAllPieces() {
-        pieceField.clear(0, pieceField.size());
+    public Boolean hasPiece(int piece) {
+        return pieceField.get(piece);
+    }
+
+    public byte[] readPiece(int piece) {
+        synchronized (pieceUtilization) {
+            if (pieceUtilization.get(piece) == true)
+                return null;
+            pieceUtilization.set(piece);
+        }
+
+        DataInputStream input = null;
+
+        try {
+            input = new DataInputStream(new FileInputStream(directory + "/" + prefix + piece));
+        } catch (Exception e) {
+
+        }
+
+        byte[] buffer = new byte[1];
+
+        return buffer;
     }
 
     public int breakdownFile() {
@@ -107,4 +122,5 @@ class PieceManager {
 
         return 0;
     }
+
 }
