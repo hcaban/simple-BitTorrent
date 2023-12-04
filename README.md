@@ -3,7 +3,7 @@ Group 63
 
 Members: Hector Caban Barreto, Aaron Estrellado, Ryan Menke
 
-Emails: hcabanbarreto@ufl.edu, 
+Emails: hcabanbarreto@ufl.edu, aaron.estrellado@ufl.edu, ryanmenke@ufl.edu
 
 # Instructions for starting simple-BitTorrent
 
@@ -11,3 +11,8 @@ Emails: hcabanbarreto@ufl.edu,
 2. Navigate to `src` directory
 3. Compile the code by with `make`
 4. Begin execution with `java peerProcess 1001`
+
+# Contributions
+
+Hector - peerProcess.java, Listener.java, Sender.java, Manager.java, PieceManager.java, Peer.java, MessageType.java
+Ryan - Logging.java, Peer.java
