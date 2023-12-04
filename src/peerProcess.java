@@ -1,6 +1,7 @@
 import java.io.*;
 import java.net.*;
 import java.util.*;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class peerProcess {
     static int id;
@@ -24,17 +25,47 @@ public class peerProcess {
         Peer.numberOfPieces = (fileSize / pieceSize) + (fileSize % pieceSize > 0 ? 1 : 0);
         ArrayList<Peer> peers = readPeerInfo();
         Logging logger = new Logging("log_peer_" + id + ".log", peers.get(peers.size() - 1));
+        PieceManager pieceManager = new PieceManager("peer_" + id, fileName, fileSize, pieceSize);
         
-        ServerSocket serverSocket = null;
+        int temp = -1;
+        for (int i = 0; i < peers.size(); i++) {
+            if (peers.get(i).getID() == id) {
+                temp = peers.get(i).getPort();
+                peers.remove(i);
+                break;
+            }
+        }
+        final int listeningPort = temp;
+
+        ConcurrentLinkedQueue<Socket> socketQueue = new ConcurrentLinkedQueue<>();
+
+        Thread server = new Thread() {
+            public void run() {
+                ServerSocket serverSocket = null;
+                try {
+                    serverSocket = new ServerSocket(listeningPort);
+                    while (true) {
+                        socketQueue.add(serverSocket.accept());
+                    }
+                } catch (Exception e) {
+                    return;
+                }
+            }
+        };
+
+        server.start();
+
+        Thread manager = new Thread(new Manager(id, peers, socketQueue, pieceManager, logger));
+        manager.start();
 
         try {
-            serverSocket = new ServerSocket(peers.get(0).getPort());
-        } catch (IOException e) {
-            System.err.println("Could not create server socket");
-            System.exit(0);
+            // TEMPORARY
+            manager.join();
+        } catch(Exception e) {
+            System.exit(1);
         }
-        peers.remove(0);
 
+        server.interrupt();
     }
 
     public static void readCommon() {
