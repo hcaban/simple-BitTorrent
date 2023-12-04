@@ -12,7 +12,7 @@ public class Peer {
     private int port;
     private Boolean hasFile;
 
-    BitSet pieces;
+    BitSet bitField;
 
     // Socket
     private Socket socket = null;
@@ -22,22 +22,23 @@ public class Peer {
     private DataInputStream input = null;
 
     Peer(int id, String hostname, int port, Boolean hasFile) {
-        this.id = id;
-        this.hostname = hostname;
-        this.port = port;
-        this.hasFile = hasFile;
-        pieces = new BitSet();
-
-        if (hasFile) {
-            pieces.set(0, pieces.size());
-        } else {
-            pieces.clear(0, pieces.size());
-        }
-
         if (numberOfPieces == -1) {
             System.err.println("Configuration not complete, class variable `numberOfPieces` not instantiated");
             System.exit(1);
         }
+
+        this.id = id;
+        this.hostname = hostname;
+        this.port = port;
+        this.hasFile = hasFile;
+        this.bitField = new BitSet(numberOfPieces);
+
+        if (hasFile) {
+            bitField.set(0, bitField.size(), true);
+        } else {
+            bitField.set(0, bitField.size(), false);
+        }
+
     }
 
     public void startConnection() {
@@ -77,7 +78,19 @@ public class Peer {
         return output;
     }
 
+    public BitSet getBitField() {
+        return bitField;
+    }
+
+    public void setID(int id) {
+        this.id = id;
+    }
+
     public synchronized void setPiece(int index) {
-        pieces.set(index);
+        bitField.set(index);
+    }
+
+    public synchronized void setBitfield(byte[] bitField) {
+        this.bitField = BitSet.valueOf(bitField);
     }
 }

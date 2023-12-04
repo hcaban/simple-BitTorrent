@@ -32,7 +32,7 @@ public class PieceManager {
         bitField.set(0, bitField.size());
     }
 
-    public Boolean hasPiece(int piece) {
+    public synchronized Boolean hasPiece(int piece) {
         return bitField.get(piece);
     }
 
@@ -58,6 +58,10 @@ public class PieceManager {
 
     public byte[] getBitField() {
         return bitField.toByteArray();
+    }
+
+    public Boolean anyPieces() {
+        return bitField.cardinality() > 0 ? true : false;
     }
 
     public int breakdownFile() {
@@ -126,6 +130,42 @@ public class PieceManager {
         }
 
         return 0;
+    }
+
+    public void addPiece(int piece, byte[] data) {
+        synchronized (bitField) {
+            if (bitField.get(piece))
+                return;
+    
+            bitField.set(piece);
+            pieceUtilization.set(piece);
+        }
+
+        try {
+            DataOutputStream output = new DataOutputStream(new FileOutputStream(prefix + piece));
+            output.write(data);
+            output.flush();
+            output.close();
+        } catch (Exception e) {
+            return;
+        }
+
+        synchronized (bitField) {
+            pieceUtilization.clear(piece);
+        }
+    }
+
+    private synchronized BitSet copyBitSet() {
+        return (BitSet)bitField.clone();
+    }
+
+    public void compareBitFields(BitSet peerBitField, Queue<Integer> interestedQueue) {
+        BitSet myBitField = copyBitSet();
+
+        for (int i = peerBitField.nextSetBit(0); i >= 0; i = peerBitField.nextSetBit(i+1)) {
+            if (myBitField.get(i) == false)
+                interestedQueue.add(i);
+        }
     }
 
 }

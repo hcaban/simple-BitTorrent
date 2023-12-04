@@ -1,11 +1,13 @@
 # simple-BitTorrent
 Group 63
-Members: Hector Caban Barreto, Aaron Estrellado, Ryan Menke 
+
+Members: Hector Caban Barreto, Aaron Estrellado, Ryan Menke
+
+Emails: hcabanbarreto@ufl.edu, 
 
 # Instructions for starting simple-BitTorrent
 
-1. Check that both Common.cfg and PeerInfo.cfg are inside the src folder.
-2. Check that both the files contain the correct information.
-3. Then open a terminal and go to the src directory.
-4. Compile the code by using `javac peerProcess.java`
-5. Run the executable and include the Peer ID number such as `java peerProcess 1001`
+1. Run `tar -zxvf projectGroup63.tar.gz` with specified file in working directory
+2. Navigate to `src` directory
+3. Compile the code by with `make`
+4. Begin execution with `java peerProcess 1001`

@@ -34,4 +34,48 @@ public enum MessageType {
     public int getPayload() {
         return payload;
     }
+
+    public void setPayload(int payload) {
+        this.payload = payload;
+    }
+
+    public static MessageType getMessageType(int val) {
+        switch (val) {
+            case 0:
+                return CHOKE;
+
+            case 1:
+                return UNCHOKE;
+
+            case 2:
+                return INTERESTED;
+
+            case 3:
+                return NOTINTERESTED;
+
+            case 4:
+                return HAVE;
+
+            case 5:
+                return BITFIELD;
+
+            case 6:
+                return REQUEST;
+
+            case 7:
+                return PIECE;
+
+            case 8:
+                return ERROR;
+
+            case 9:
+                return KILL;
+
+            case 10:
+                return PAYLOAD;
+
+            default:
+                return ERROR;
+        }
+    }
 }

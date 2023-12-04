@@ -4,12 +4,13 @@ import java.util.concurrent.*;
 
 public class Sender implements Runnable {
     private ConcurrentLinkedQueue<MessageType> channel;
+    private Logging logger;
     private Peer peer;
     private DataOutputStream output;
     private PieceManager pieceManager;
     private int ID;
 
-    public Sender(int ID, Peer peer, ConcurrentLinkedQueue<MessageType> channel, PieceManager pieceManager) {
+    public Sender(int ID, Peer peer, ConcurrentLinkedQueue<MessageType> channel, PieceManager pieceManager, Logging logger) {
         this.ID = ID;
         this.peer = peer;
         this.channel = channel;
@@ -24,6 +25,15 @@ public class Sender implements Runnable {
             output.writeBytes("P2PFILESHARINGPROJ");
             output.writeBytes("\0\0\0\0\0\0\0\0\0\0");
             output.writeInt(ID);
+
+            if (pieceManager.anyPieces()) {
+                byte[] bitField = pieceManager.getBitField();
+                output.writeInt(1 + bitField.length);
+                output.writeByte(MessageType.BITFIELD.getValue());
+                output.write(bitField);
+                output.flush();
+            }
+
             
             MessageType message = null;
             while ((message = channel.poll()) != MessageType.KILL) {
@@ -51,7 +61,7 @@ public class Sender implements Runnable {
                         // MessageType Type
                         output.writeByte(message.getValue());
                         // MessageType Payload
-                        output.writeInt(channel.remove().getPayload());
+                        output.writeInt(message.getPayload());
                         output.flush();
                         break;
 
