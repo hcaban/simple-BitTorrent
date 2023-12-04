@@ -15,8 +15,13 @@ Emails: hcabanbarreto@ufl.edu, aaron.estrellado@ufl.edu, ryanmenke@ufl.edu
 # Contributions
 
 Hector - peerProcess.java, Listener.java, Sender.java, Manager.java, PieceManager.java, Peer.java, MessageType.java
+
 Ryan - Logging.java, Peer.java
 
 # What was implemented
 
 Unfortunately we were not able to get the program to function properly. The general architecture of the application has been implemented but the fine-grain details that would create a fully functioning program were not implemented. The video below provides an explanation of the structure of the program.
+
+# Video Link
+
+https://youtu.be/QtGLo58S3rk
